@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bonus index{% endblock %}
+
+{% block body %}
+    <h1>Bonus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>BonusPV</th>
+                <th>BonusAtk</th>
+                <th>BonusDef</th>
+                <th>BonusAgi</th>
+                <th>BonusInt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bonu in bonuses %}
+            <tr>
+                <td>{{ bonu.id }}</td>
+                <td>{{ bonu.bonusPV }}</td>
+                <td>{{ bonu.bonusAtk }}</td>
+                <td>{{ bonu.bonusDef }}</td>
+                <td>{{ bonu.bonusAgi }}</td>
+                <td>{{ bonu.bonusInt }}</td>
+                <td>
+                    <a href="{{ path('app_bonus_show', {'id': bonu.id}) }}">show</a>
+                    <a href="{{ path('app_bonus_edit', {'id': bonu.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bonus_new') }}">Create new</a>
+{% endblock %}

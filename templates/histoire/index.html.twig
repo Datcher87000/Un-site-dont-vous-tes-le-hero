@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Histoire index{% endblock %}
+
+{% block body %}
+    <h1>Histoire index</h1>
+
+    <div class="justify-content-left d-flex  m-4">
+        <a class=" btn btn-primary" href="{{ path('app_histoire_new') }}">Create new</a>
+    </div>
+
+    <table class="table container">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>CreatedAt</th>
+                <th>createur</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for histoire in histoires %}
+            <tr>
+                <td>{{ histoire.titre }}</td>
+                <td>{{ histoire.createdAt ? histoire.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ histoire.createur.pseudo }}</td>
+                <td>{{ histoire.description }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_histoire_show', {'id': histoire.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_histoire_edit', {'id': histoire.id}) }}">edit</a>
+                    <form method="post" action="{{ path('app_histoire_delete', {'id': histoire.id}) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ histoire.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Vous n'avez pas d'histoire créés</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

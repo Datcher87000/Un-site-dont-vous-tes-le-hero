@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hero{% endblock %}
+
+{% block body %}
+    <h1>{{ hero.name }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Créé par</th>
+                <td>{{ hero.utilisateur.pseudo }}</td>
+            </tr>
+            <tr>
+                <th>Pv</th>
+                <td>{{ hero.pv }}</td>
+            </tr>
+            <tr>
+                <th>Atk</th>
+                <td>{{ hero.atk }}</td>
+            </tr>
+            <tr>
+                <th>Def</th>
+                <td>{{ hero.def }}</td>
+            </tr>
+            <tr>
+                <th>Agi</th>
+                <td>{{ hero.agi }}</td>
+            </tr>
+            <tr>
+                <th>Int</th>
+                <td>{{ hero.intel }}</td>
+            </tr>
+        </tbody>
+    </table>
+<div class="d-flex flex-row justify-content-center">
+    <a class="btn btn-dark m-2" href="{{ path('app_hero_index') }}">back to list</a>
+    <a class="btn btn-secondary m-2" href="{{ path('app_hero_edit', {'id': hero.id}) }}">edit</a>
+    {{ include('hero/_delete_form.html.twig') }}
+</div>
+{% endblock %}

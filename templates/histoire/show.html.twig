@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Histoire{% endblock %}
+
+    {% block body %}
+        <h1>{{ histoire.titre }}</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ histoire.titre }}</td>
+                </tr>
+                <tr>
+                    <th>Créé le</th>
+                    <td>{{ histoire.createdAt ? histoire.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ histoire.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ path('app_histoire_index') }}" class="btn btn-secondary">Retour à la liste</a>
+        {% if is_granted('ROLE_ADMIN') or app.user == histoire.createur %}
+            <a href="{{ path('app_histoire_edit', {'id': histoire.id}) }}" class="btn btn-primary">Modifier</a>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') or app.user == histoire.createur %}
+            <a href="#" id="btn-delete" class="btn btn-danger">Supprimer</a>
+        {% endif %}
+
+        {% set canAddChapter = is_granted('ROLE_USER') and (is_granted('ROLE_ADMIN') or app.user == histoire.createur) %}
+        {% if canAddChapter %}
+        <h2>Chapitres</h2>
+        <ul>
+            {% for chapitre in chapitres %}
+                <li>{{ chapitre.titre }}</li>
+            {% else %}
+                <li>Aucun chapitre pour cette histoire.</li>
+            {% endfor %}
+        </ul>
+            <a href="{{ path('app_histoire_index') }}" class="btn btn-secondary">Retour à la liste</a>
+            <a href="{{ path('app_chapitre_new', { id: histoire.id }) }}" class="btn btn-primary">Ajouter un chapitre</a>
+
+        {% endif %}
+    {% endblock %}

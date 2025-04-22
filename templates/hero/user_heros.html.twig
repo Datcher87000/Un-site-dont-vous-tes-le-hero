@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes héros{% endblock %}
+
+{% block body %}
+    <h1>Mes héros</h1>
+
+    <a href="{{ path('app_hero_new') }}" class="btn btn-success">Créer un nouvel héro</a>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hero in heros %}
+
+                    <tr>
+                        <td>{{ hero.name }}</td>
+                        <td>
+                            <a class="btn btn-success" href="{{ path('app_hero_show', {'id': hero.id}) }}">show</a>
+                            <a class="btn btn-secondary" href="{{ path('app_hero_edit', {'id': hero.id}) }}">edit</a>
+                            <form method="post" action="{{ path('app_hero_delete', {'id': hero.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ hero.id) }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">Aucun héros trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <a class="btn btn-dark" href="{{ path('app_hero_index') }}">Retour à la liste</a>
+{% endblock %}

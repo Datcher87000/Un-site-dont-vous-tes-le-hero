@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes équipements{% endblock %}
+
+{% block body %}
+    <h1>Mes équipements</h1>
+
+    <a href="{{ path('app_equipement_new') }}" class="btn btn-success">Créer un nouvel équipement</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Emplacement</th>
+                <th>options</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for equipement in equipements %}
+
+            <tr>
+                <td>{{ equipement.name }}</td>
+                <td>{{ equipement.emplacement }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_equipement_show', {'id': equipement.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_equipement_edit', {'id': equipement.id}) }}">edit</a>
+                    <form method="post" action="{{ path('app_equipement_delete', {'id': equipement.id}) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipement.id) }}">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+    {% else %}
+            <tr>
+                <td colspan="2">Aucun équipement trouvé</td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-dark" href="{{ path('app_equipement_index') }}">Retour à la liste</a>
+{% endblock %}

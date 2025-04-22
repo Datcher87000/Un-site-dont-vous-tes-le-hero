@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un chapitre{% endblock %}
+
+{% block body %}
+    <h1>Créer un chapitre pour l'histoire : {{ histoire.titre }}</h1>
+
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.titre) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.titre) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" id="toggle-monstres"> Monstres
+        </label>
+        <div id="monstres-section" style="display: none;">
+            {{ form_row(form.monstres) }}
+        </div>
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" id="toggle-bonus"> Bonus
+        </label>
+        <div id="bonus-section" style="display: none;">
+            {{ form_row(form.bonus) }}
+        </div>
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" id="toggle-malus"> Malus
+        </label>
+        <div id="malus-section" style="display: none;">
+            {{ form_row(form.malus) }}
+        </div>
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" id="toggle-equipements"> Équipement
+        </label>
+        <div id="equipements-section" style="display: none;">
+            {{ form_row(form.equipements) }}
+        </div>
+    </div>
+   <div>
+       <label>Choix</label>
+       <div id="choix-container" data-prototype="{{ form_widget(form.choix.vars.prototype)|e('html_attr') }}" data-index="{{ form.choix|length }}">
+           {% for choix in form.choix %}
+               <div class="choix-item">
+                   {{ form_row(choix) }}
+                   <button type="button" class="remove-item-btn btn btn-danger">Supprimer</button>
+               </div>
+           {% endfor %}
+       </div>
+       <button type="button" class="add-item-btn btn btn-success" data-target="choix-container">+</button>
+   </div>
+   <button class="btn btn-primary">Créer</button>
+
+   <script>
+       document.addEventListener('DOMContentLoaded', function () {
+           // Gestion des sections conditionnelles
+           document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+               checkbox.addEventListener('change', function () {
+                   const targetId = checkbox.id.replace('toggle-', '') + '-section';
+                   const target = document.getElementById(targetId);
+                   if (checkbox.checked) {
+                       target.style.display = 'block';
+                   } else {
+                       target.style.display = 'none';
+                   }
+               });
+           });
+
+           // Gestion de l'ajout dynamique
+           document.querySelectorAll('.add-item-btn').forEach(function (button) {
+               button.addEventListener('click', function () {
+                   const container = document.getElementById(button.dataset.target);
+                   const prototype = container.dataset.prototype;
+                   const index = container.dataset.index || container.children.length;
+
+                   const newForm = prototype.replace(/__name__/g, index);
+                   container.dataset.index = parseInt(index) + 1;
+
+                   const div = document.createElement('div');
+                   div.classList.add('choix-item');
+                   div.innerHTML = newForm + '<button type="button" class="remove-item-btn btn btn-danger">Supprimer</button>';
+                   container.appendChild(div);
+
+                   // Ajout du gestionnaire pour le bouton "Supprimer"
+                   div.querySelector('.remove-item-btn').addEventListener('click', function () {
+                       div.remove();
+                   });
+               });
+           });
+
+           // Gestion de la suppression
+           document.querySelectorAll('.remove-item-btn').forEach(function (button) {
+               button.addEventListener('click', function () {
+                   button.closest('.choix-item').remove();
+               });
+           });
+       });
+   </script>
+{% endblock %}

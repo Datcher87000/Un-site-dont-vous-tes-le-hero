@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Malus{% endblock %}
+
+{% block body %}
+    <h1>Malus</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ malu.id }}</td>
+            </tr>
+            <tr>
+                <th>MalusPv</th>
+                <td>{{ malu.malusPv }}</td>
+            </tr>
+            <tr>
+                <th>MalusAtk</th>
+                <td>{{ malu.malusAtk }}</td>
+            </tr>
+            <tr>
+                <th>MalusDef</th>
+                <td>{{ malu.malusDef }}</td>
+            </tr>
+            <tr>
+                <th>MalusAgi</th>
+                <td>{{ malu.malusAgi }}</td>
+            </tr>
+            <tr>
+                <th>MalusInt</th>
+                <td>{{ malu.malusInt }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_malus_index') }}">back to list</a>
+
+    <a href="{{ path('app_malus_edit', {'id': malu.id}) }}">edit</a>
+
+    {{ include('malus/_delete_form.html.twig') }}
+{% endblock %}

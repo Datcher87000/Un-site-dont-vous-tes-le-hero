@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Malus index{% endblock %}
+
+{% block body %}
+    <h1>Malus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>MalusPv</th>
+                <th>MalusAtk</th>
+                <th>MalusDef</th>
+                <th>MalusAgi</th>
+                <th>MalusInt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for malu in maluses %}
+            <tr>
+                <td>{{ malu.id }}</td>
+                <td>{{ malu.malusPv }}</td>
+                <td>{{ malu.malusAtk }}</td>
+                <td>{{ malu.malusDef }}</td>
+                <td>{{ malu.malusAgi }}</td>
+                <td>{{ malu.malusInt }}</td>
+                <td>
+                    <a href="{{ path('app_malus_show', {'id': malu.id}) }}">show</a>
+                    <a href="{{ path('app_malus_edit', {'id': malu.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_malus_new') }}">Create new</a>
+{% endblock %}

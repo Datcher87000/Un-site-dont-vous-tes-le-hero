@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes monstres{% endblock %}
+
+{% block body %}
+    <h1>Mes monstres</h1>
+
+        <a href="{{ path('app_monstre_new') }}" class="btn btn-success">Créer un nouveau monstre</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>options</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for monstre in monstres %}
+
+            <tr>
+                <td>{{ monstre.name }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_monstre_show', {'id': monstre.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_monstre_edit', {'id': monstre.id}) }}">edit</a>
+                    <form method="post" action="{{ path('app_monstre_delete', {'id': monstre.id}) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ monstre.id) }}">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun monstres trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+
+    </table>
+    <a class="btn btn-dark" href="{{ path('app_monstre_index') }}">Retour à la liste</a>
+{% endblock %}

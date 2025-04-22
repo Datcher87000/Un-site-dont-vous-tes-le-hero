@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <h1>Bienvenue sur le tableau de bord</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>Section Administrateur</h2>
+        <ul>
+            <li><a href="{{ path('app_histoire_index') }}">Gérer les histoires</a></li>
+            <li><a href="{{ path('app_hero_index') }}">Gérer les héros</a></li>
+            <li><a href="{{ path('app_user_index') }}">Gérer les utilisateurs</a></li>
+        </ul>
+    {% endif %}
+
+    {% if is_granted('ROLE_USER') %}
+        <h2>Section Utilisateur</h2>
+        <ul>
+            <li><a href="{{ path('app_histoire_user') }}">Voir mes histoires</a></li>
+            <li><a href="{{ path('app_hero_user') }}">Voir mes héros</a></li>
+            <li><a href="{{ path('app_equipement_user') }}">Voir mes équipements</a></li>
+            <li><a href="{{ path('app_monstre_user') }}">Voir mes monstres</a></li>
+        </ul>
+    {% else %}
+        <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour accéder à votre tableau de bord.</p>
+    {% endif %}
+{% endblock %}

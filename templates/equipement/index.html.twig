@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Equipement index{% endblock %}
+
+{% block body %}
+    <h1>Equipement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Créé par</th>
+                <th>Name</th>
+                <th>Emplacement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for equipement in equipements %}
+            <tr>
+                <td>{{ equipement.createur }}</td>
+                <td>{{ equipement.name }}</td>
+                <td>{{ equipement.emplacement }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_equipement_show', {'id': equipement.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_equipement_edit', {'id': equipement.id}) }}">edit</a>
+                    <form method="post" action="{{ path('app_equipement_delete', {'id': equipement.id}) }}" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipement.id) }}">
+                        <button class="btn btn-danger">delete</button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_equipement_new') }}">Create new</a>
+{% endblock %}

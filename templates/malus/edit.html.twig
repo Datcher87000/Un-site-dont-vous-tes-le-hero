@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Malus{% endblock %}
+
+{% block body %}
+    <h1>Edit Malus</h1>
+
+    {{ include('malus/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_malus_index') }}">back to list</a>
+
+    {{ include('malus/_delete_form.html.twig') }}
+{% endblock %}

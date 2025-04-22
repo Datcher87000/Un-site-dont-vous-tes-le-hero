@@ -1,0 +1,40 @@
+<footer class="bg-light text-center text-lg-start mt-auto">
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Un Site Dont Vous Êtes Le Héro</h5>
+                <p>
+                    Créez vos propres histoires interactives et explorez celles des autres utilisateurs.
+                </p>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Liens utiles</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="{{ path('app_home') }}" class="text-dark">Accueil</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_hero_index') }}" class="text-dark">Héros</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_histoire_index') }}" class="text-dark">Histoires</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Contact</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="#" class="text-dark">Nous contacter</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-dark">Mentions légales</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center p-3 bg-dark text-white">
+        © {{ "now"|date("Y") }} Un Site Dont Vous Êtes Le Héro. Tous droits réservés.
+    </div>
+</footer>
