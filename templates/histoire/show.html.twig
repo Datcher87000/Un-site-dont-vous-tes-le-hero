@@ -34,14 +34,19 @@
         {% if canAddChapter %}
         <h2>Chapitres</h2>
         <ul>
-            {% for chapitre in chapitres %}
-                <li>{{ chapitre.titre }}</li>
-            {% else %}
-                <li>Aucun chapitre pour cette histoire.</li>
-            {% endfor %}
+            {% if is_granted('ROLE_ADMIN') or app.user == histoire.createur %}
+                {% for chapitre in chapitres %}
+                    <li>
+                        {{ chapitre.titre }}
+                        <a href="{{ path('app_chapitre_edit', { 'histoireId': histoire.id, 'chapitreId': chapitre.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="{{ path('app_chapitre_show', { 'histoireId': histoire.id, 'chapitreId': chapitre.id }) }}" class="btn btn-secondary btn-sm">Voir</a>
+                    </li>
+                {% else %}
+                    <li>Aucun chapitre pour cette histoire.</li>
+                {% endfor %}
+            {% endif %}
         </ul>
             <a href="{{ path('app_histoire_index') }}" class="btn btn-secondary">Retour à la liste</a>
-            <a href="{{ path('app_chapitre_new', { id: histoire.id }) }}" class="btn btn-primary">Ajouter un chapitre</a>
 
         {% endif %}
     {% endblock %}

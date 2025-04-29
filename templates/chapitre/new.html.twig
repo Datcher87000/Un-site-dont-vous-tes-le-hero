@@ -66,51 +66,48 @@
        </div>
        <button type="button" class="add-item-btn btn btn-success" data-target="choix-container">+</button>
    </div>
-   <button class="btn btn-primary">Créer</button>
+   <button class="btn btn-primary" type="submit">Créer</button>
 
    <script>
-       document.addEventListener('DOMContentLoaded', function () {
-           // Gestion des sections conditionnelles
-           document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
-               checkbox.addEventListener('change', function () {
-                   const targetId = checkbox.id.replace('toggle-', '') + '-section';
-                   const target = document.getElementById(targetId);
-                   if (checkbox.checked) {
-                       target.style.display = 'block';
-                   } else {
-                       target.style.display = 'none';
-                   }
-               });
-           });
+     document.addEventListener('turbo:load', function () {
+         // Réinitialisez vos gestionnaires d'événements ici
+         document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+             checkbox.addEventListener('change', function () {
+                 const targetId = checkbox.id.replace('toggle-', '') + '-section';
+                 const target = document.getElementById(targetId);
+                 if (checkbox.checked) {
+                     target.style.display = 'block';
+                 } else {
+                     target.style.display = 'none';
+                 }
+             });
+         });
 
-           // Gestion de l'ajout dynamique
-           document.querySelectorAll('.add-item-btn').forEach(function (button) {
-               button.addEventListener('click', function () {
-                   const container = document.getElementById(button.dataset.target);
-                   const prototype = container.dataset.prototype;
-                   const index = container.dataset.index || container.children.length;
+         document.querySelectorAll('.add-item-btn').forEach(function (button) {
+             button.addEventListener('click', function () {
+                 const container = document.getElementById(button.dataset.target);
+                 const prototype = container.dataset.prototype;
+                 const index = container.dataset.index || container.children.length;
 
-                   const newForm = prototype.replace(/__name__/g, index);
-                   container.dataset.index = parseInt(index) + 1;
+                 const newForm = prototype.replace(/__name__/g, index);
+                 container.dataset.index = parseInt(index) + 1;
 
-                   const div = document.createElement('div');
-                   div.classList.add('choix-item');
-                   div.innerHTML = newForm + '<button type="button" class="remove-item-btn btn btn-danger">Supprimer</button>';
-                   container.appendChild(div);
+                 const div = document.createElement('div');
+                 div.classList.add('choix-item');
+                 div.innerHTML = newForm + '<button type="button" class="remove-item-btn btn btn-danger">Supprimer</button>';
+                 container.appendChild(div);
 
-                   // Ajout du gestionnaire pour le bouton "Supprimer"
-                   div.querySelector('.remove-item-btn').addEventListener('click', function () {
-                       div.remove();
-                   });
-               });
-           });
+                 div.querySelector('.remove-item-btn').addEventListener('click', function () {
+                     div.remove();
+                 });
+             });
+         });
 
-           // Gestion de la suppression
-           document.querySelectorAll('.remove-item-btn').forEach(function (button) {
-               button.addEventListener('click', function () {
-                   button.closest('.choix-item').remove();
-               });
-           });
-       });
+         document.querySelectorAll('.remove-item-btn').forEach(function (button) {
+             button.addEventListener('click', function () {
+                 button.closest('.choix-item').remove();
+             });
+         });
+     });
    </script>
 {% endblock %}

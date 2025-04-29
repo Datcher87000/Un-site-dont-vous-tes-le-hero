@@ -55,8 +55,8 @@ class Chapitre
     /**
      * @var Collection<int, Choix>
      */
-    #[ORM\OneToMany(targetEntity: Choix::class, mappedBy: 'chapitre')]
-    private Collection $choix;
+   #[ORM\OneToMany(targetEntity: Choix::class, mappedBy: 'chapitre', cascade: ['persist', 'remove'], orphanRemoval: true)]
+   private Collection $choix;
 
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
