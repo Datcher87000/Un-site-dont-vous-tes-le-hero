@@ -163,4 +163,46 @@ class StatHero
 
         return $this;
     }
+
+    public function copyHeroStats(Hero $hero): StatHero
+    {
+        $statHero = new StatHero();
+        $statHero->setPvActu($hero->getPv());
+        $statHero->setAtkActu($hero->getAtk());
+        $statHero->setDefActu($hero->getDef());
+        $statHero->setAgiActu($hero->getAgi());
+        $statHero->setIntActu($hero->getIntel());
+        $statHero->setHero($hero);
+
+        return $statHero;
+    }
+    public function attack(StatHero $attacker, StatHero $defender): array
+    {
+        $attackerRoll = $attacker->getAtkActu() + random_int(1, 5);
+        $defenderRoll = $defender->getDefActu() + random_int(1, 5);
+
+        if ($attackerRoll > $defenderRoll) {
+            $damage = $attacker->getAtkActu() + random_int(1, 4);
+            $defender->setPvActu($defender->getPvActu() - $damage);
+
+            return [
+                'success' => true,
+                'damage' => $damage,
+            ];
+        }
+
+        return [
+            'success' => false,
+            'damage' => 0,
+        ];
+    }
+
+    public function applyTemporaryBonus(StatHero $statHero, int $agiBonus, int $intelBonus, int $atkBonus, int $defBonus, int $pvBonus): void
+    {
+        $statHero->setAgiActu($statHero->getAgiActu() + $agiBonus);
+        $statHero->setIntActu($statHero->getIntActu() + $intelBonus);
+        $statHero->setAtkActu($statHero->getAtkActu() + $atkBonus);
+        $statHero->setDefActu($statHero->getDefActu() + $defBonus);
+        $statHero->setPvActu($statHero->getPvActu() + $pvBonus);
+    }
 }

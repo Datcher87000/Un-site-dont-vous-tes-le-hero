@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chapitre : {{ chapitre.titre }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ chapitre.titre }}</h1>
+    {% include 'jouer/_stat_hero.html.twig' with { 'statHero': statHero } %}
+    <p>{{ chapitre.description }}</p>
+
+    <h2>Choix</h2>
+    <ul>
+        {% for choix in choix %}
+            <li>
+                <a href="{{ path('app_jouer_choix', { id: choix.id }) }}">
+                    {{ choix.description }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

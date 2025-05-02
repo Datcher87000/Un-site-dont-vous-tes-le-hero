@@ -27,7 +27,10 @@
         {% endif %}
 
         {% if is_granted('ROLE_ADMIN') or app.user == histoire.createur %}
-            <a href="#" id="btn-delete" class="btn btn-danger">Supprimer</a>
+            <form method="post" action="{{ path('app_histoire_delete', {'id': histoire.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette histoire ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ histoire.id) }}">
+                <button class="btn btn-danger">Supprimer</button>
+            </form>
         {% endif %}
 
         {% set canAddChapter = is_granted('ROLE_USER') and (is_granted('ROLE_ADMIN') or app.user == histoire.createur) %}
@@ -40,6 +43,20 @@
                         {{ chapitre.titre }}
                         <a href="{{ path('app_chapitre_edit', { 'histoireId': histoire.id, 'chapitreId': chapitre.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
                         <a href="{{ path('app_chapitre_show', { 'histoireId': histoire.id, 'chapitreId': chapitre.id }) }}" class="btn btn-secondary btn-sm">Voir</a>
+
+                        {% if chapitre.choix|length > 0 %}
+                            <ul>
+                                {% for choix in chapitre.choix %}
+                                    {% if choix.chapitreCible %}
+                                        <li>Chapitre Cible :
+                                            <a href="{{ path('app_chapitre_show', { 'histoireId': histoire.id, 'chapitreId': choix.chapitre.id }) }}">
+                                                {{ choix.chapitreCible }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </li>
                 {% else %}
                     <li>Aucun chapitre pour cette histoire.</li>

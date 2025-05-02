@@ -71,12 +71,12 @@ final class HeroController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_hero_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_hero_index');
         }
 
         return $this->render('hero/edit.html.twig', [
             'hero' => $hero,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

@@ -222,4 +222,21 @@ class Enchantement
 
         return $this;
     }
+    public function applyToStatHero(StatHero $statHero): void
+    {
+        $statHero->setPvActu($statHero->getPvActu() + $this->bonusPv - $this->malusPv);
+        $statHero->setAtkActu($statHero->getAtkActu() + $this->bonusAtk - $this->malusAtk);
+        $statHero->setDefActu($statHero->getDefActu() + $this->bonusDef - $this->malusDef);
+        $statHero->setAgiActu($statHero->getAgiActu() + $this->bonusAgi - $this->malusAgi);
+        $statHero->setIntActu($statHero->getIntActu() + $this->bonusInt - $this->malusInt);
+    }
+
+    public function removeFromStatHero(StatHero $statHero): void
+    {
+        $statHero->setPvActu($statHero->getPvActu() - $this->bonusPv + $this->malusPv);
+        $statHero->setAtkActu($statHero->getAtkActu() - $this->bonusAtk + $this->malusAtk);
+        $statHero->setDefActu($statHero->getDefActu() - $this->bonusDef + $this->malusDef);
+        $statHero->setAgiActu($statHero->getAgiActu() - $this->bonusAgi + $this->malusAgi);
+        $statHero->setIntActu($statHero->getIntActu() - $this->bonusInt + $this->malusInt);
+    }
 }

@@ -4,9 +4,12 @@ namespace App\Form;
 
 use App\Entity\Hero;
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HeroType extends AbstractType
@@ -15,12 +18,29 @@ class HeroType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('pv')
-            ->add('atk')
-            ->add('def')
-            ->add('agi')
-            ->add('intel')
-        ;
+            ->add('pv', IntegerType::class, [
+                'attr' => ['min' => 10, 'step' => 5],
+            ])
+            ->add('atk', IntegerType::class, [
+                'attr' => ['min' => 1],
+            ])
+            ->add('def', IntegerType::class, [
+                'attr' => ['min' => 1],
+            ])
+            ->add('agi', IntegerType::class, [
+                'attr' => ['min' => 1],
+            ])
+            ->add('intel', IntegerType::class, [
+                'attr' => ['min' => 1],
+            ]);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $hero = $event->getData();
+
+            if (!$hero->validateStats()) {
+                $form->addError(new FormError('Vous devez répartir exactement 20 points.'));
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

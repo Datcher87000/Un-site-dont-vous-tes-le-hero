@@ -1,11 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Hero{% endblock %}
+            {% block title %}New Hero{% endblock %}
 
-{% block body %}
-    <h1>Create new Hero</h1>
+            {% block body %}
+                <h1>Create new Hero</h1>
 
-    {{ include('hero/_form.html.twig') }}
+                <p>
+                    Règles pour la création d'un héros :
+                    <ul>
+                        <li>Vous disposez de 20 points à répartir entre les différentes statistiques.</li>
+                        <li>Les statistiques sont : PV, ATK, DEF, AGI, et INT.</li>
+                        <li>Chaque statistique commence avec une valeur minimale : 10 pour les PV et 1 pour les autres.</li>
+                        <li>Les points sont attribués selon les ratios suivants :
+                            <ul>
+                                <li>1 point pour augmenter ATK, DEF, AGI ou INT de 1.</li>
+                                <li>1 point pour augmenter les PV de 5.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </p>
 
-    <a href="{{ path('app_hero_index') }}">back to list</a>
-{% endblock %}
+                <p>
+                    <strong>Points utilisés : <span id="points-used">0</span>/20</strong>
+                </p>
+
+                {{ include('hero/_form.html.twig') }}
+
+                <a href="{{ path('app_hero_index') }}">back to list</a>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const fields = ['pv', 'atk', 'def', 'agi', 'intel'];
+                        const baseValues = { pv: 10, atk: 1, def: 1, agi: 1, intel: 1 };
+                        const pvRatio = 5;
+                        const maxPoints = 20;
+
+                        function updatePointsUsed() {
+                            let totalPoints = 0;
+
+                            fields.forEach(field => {
+                                const input = document.querySelector(`[name="hero[${field}]"]`);
+                                const value = parseInt(input.value, 10) || baseValues[field];
+                                if (field === 'pv') {
+                                    totalPoints += (value - baseValues[field]) / pvRatio;
+                                } else {
+                                    totalPoints += value - baseValues[field];
+                                }
+                            });
+
+                            document.getElementById('points-used').textContent = Math.min(totalPoints, maxPoints);
+                        }
+
+                        fields.forEach(field => {
+                            const input = document.querySelector(`[name="hero[${field}]"]`);
+                            input.addEventListener('input', updatePointsUsed);
+                        });
+
+                        updatePointsUsed();
+                    });
+                </script>
+            {% endblock %}

@@ -6,6 +6,7 @@ use App\Repository\HeroRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: HeroRepository::class)]
 class Hero
@@ -18,21 +19,32 @@ class Hero
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?int $pv = null;
+    #[ORM\Column(type: 'integer', options: ['default' => 10])]
+    #[Assert\GreaterThanOrEqual(10)]
+    private ?int $pv = 10;
 
-    #[ORM\Column]
-    private ?int $atk = null;
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[Assert\GreaterThanOrEqual(1)]
+    private ?int $atk = 1;
 
-    #[ORM\Column]
-    private ?int $def = null;
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[Assert\GreaterThanOrEqual(1)]
+    private ?int $def = 1;
 
-    #[ORM\Column]
-    private ?int $agi = null;
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[Assert\GreaterThanOrEqual(1)]
+    private ?int $agi = 1;
 
-    #[ORM\Column]
-    private ?int $intel = null;
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[Assert\GreaterThanOrEqual(1)]
+    private ?int $intel = 1;
 
+    public function validateStats(): bool
+    {
+        $totalPoints = ($this->def - 1) + ($this->atk - 1) + ($this->agi - 1) + ($this->intel - 1) + (int)(($this->pv - 10) / 5);
+
+        return $totalPoints === 20;
+    }
     #[ORM\ManyToOne(inversedBy: 'heros')]
     private ?User $utilisateur = null;
 

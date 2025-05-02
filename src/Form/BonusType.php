@@ -14,16 +14,30 @@ class BonusType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('bonusPV')
-            ->add('bonusAtk')
-            ->add('bonusDef')
-            ->add('bonusAgi')
-            ->add('bonusInt')
-            ->add('chapitres', EntityType::class, [
-                'class' => Chapitre::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+            ->add('name', null, [
+                'label' => 'Nom du Bonus',
             ])
+            ->add('bonusPV', null, [
+                'label' => 'Bonus PV',
+                'attr' => ['min' => 0, 'step' => 5],
+            ])
+            ->add('bonusAtk', null, [
+                    'label' => 'Bonus Attaque',
+                    'attr' => ['min' => 0],
+                ])
+            ->add('bonusDef', null, [
+                'label' => 'Bonus Défense',
+                'attr' => ['min' => 0],
+            ])
+            ->add('bonusAgi', null, [
+                'label' => 'Bonus Agilité',
+                'attr' => ['min' => 0],
+            ])
+            ->add('bonusInt', null, [
+                'label' => 'Bonus Intelligence',
+                'attr' => ['min' => 0],
+            ])
+
         ;
     }
 

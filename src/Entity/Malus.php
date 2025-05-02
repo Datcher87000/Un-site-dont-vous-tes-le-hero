@@ -36,6 +36,9 @@ class Malus
     #[ORM\ManyToMany(targetEntity: Chapitre::class, mappedBy: 'malus')]
     private Collection $chapitres;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->chapitres = new ArrayCollection();
@@ -129,6 +132,18 @@ class Malus
         if ($this->chapitres->removeElement($chapitre)) {
             $chapitre->removeMalu($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

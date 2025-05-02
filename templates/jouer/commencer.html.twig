@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commencer l'histoire{% endblock %}
+
+{% block body %}
+    <h1>Histoire : {{ histoire.titre }}</h1>
+    <p>{{ histoire.description }}</p>
+
+    <h2>Votre héros</h2>
+    <ul>
+        <li>PV : {{ statHero.pvActu }}</li>
+        <li>ATK : {{ statHero.atkActu }}</li>
+        <li>DEF : {{ statHero.defActu }}</li>
+        <li>AGI : {{ statHero.agiActu }}</li>
+        <li>INT : {{ statHero.intActu }}</li>
+    </ul>
+
+    <a href="{{ path('app_jouer_chapitre', { id: histoire.chapitres|first.id }) }}">Commencer l'histoire</a>
+{% endblock %}

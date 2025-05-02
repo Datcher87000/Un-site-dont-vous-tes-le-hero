@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Modifier le chapitre : {{ chapitre.titre }}</h1>
 
-  {{ form_start(form) }}
+    {{ form_start(form) }}
     {{ form_errors(form) }}
     <div class="form-group">
         {{ form_label(form.titre) }}
@@ -22,38 +22,42 @@
         {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.description) }}
     </div>
-    <div>
-        <label>
-            <input type="checkbox" id="toggle-monstres"> Monstres
-        </label>
-        <div id="monstres-section" style="display: none;">
-            {{ form_row(form.monstres) }}
-        </div>
-    </div>
-    <div>
-        <label>
-            <input type="checkbox" id="toggle-bonus"> Bonus
-        </label>
-        <div id="bonus-section" style="display: none;">
-            {{ form_row(form.bonus) }}
-        </div>
-    </div>
-    <div>
-        <label>
-            <input type="checkbox" id="toggle-malus"> Malus
-        </label>
-        <div id="malus-section" style="display: none;">
-            {{ form_row(form.malus) }}
-        </div>
-    </div>
-    <div>
-        <label>
-            <input type="checkbox" id="toggle-equipements"> Équipement
-        </label>
-        <div id="equipements-section" style="display: none;">
-            {{ form_row(form.equipements) }}
-        </div>
-    </div>
+ <div>
+      <label>
+          <input type="checkbox" id="toggle-monstres"> Monstres
+      </label>
+      <div id="monstres-section" style="display: none;">
+          {{ form_row(form.monstres) }}
+          <a href="{{ path('app_monstre_new') }}" class="btn btn-link" target="_blank">Créer un nouveau Monstre</a>
+      </div>
+  </div>
+  <div>
+      <label>
+          <input type="checkbox" id="toggle-bonus"> Bonus
+      </label>
+      <div id="bonus-section" style="display: none;">
+          {{ form_row(form.bonus) }}
+          <a href="{{ path('app_bonus_new') }}" class="btn btn-link" target="_blank">Créer un nouveau Bonus</a>
+      </div>
+  </div>
+  <div>
+      <label>
+          <input type="checkbox" id="toggle-malus"> Malus
+      </label>
+      <div id="malus-section" style="display: none;">
+          {{ form_row(form.malus) }}
+          <a href="{{ path('app_malus_new') }}" class="btn btn-link" target="_blank">Créer un nouveau Malus</a>
+      </div>
+  </div>
+  <div>
+      <label>
+          <input type="checkbox" id="toggle-equipements"> Équipement
+      </label>
+      <div id="equipements-section" style="display: none;">
+          {{ form_row(form.equipements) }}
+          <a href="{{ path('app_equipement_new') }}" class="btn btn-link" target="_blank">Créer un nouvel Équipement</a>
+      </div>
+  </div>
     <div>
         <label>Choix</label>
         <div id="choix-container" data-prototype="{{ form_widget(form.choix.vars.prototype)|e('html_attr') }}" data-index="{{ form.choix|length }}">
@@ -68,47 +72,53 @@
     </div>
 
     <button class="btn btn-primary" type="submit">Modifier</button>
-{{ form_end(form) }}
-    <script>
-        document.addEventListener('turbo:load', function () {
-            // Réinitialisez vos gestionnaires d'événements ici
-            document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    const targetId = checkbox.id.replace('toggle-', '') + '-section';
-                    const target = document.getElementById(targetId);
-                    if (checkbox.checked) {
-                        target.style.display = 'block';
-                    } else {
-                        target.style.display = 'none';
-                    }
-                });
-            });
+    {{ form_end(form, {'render_rest': false}) }}
 
-            document.querySelectorAll('.add-item-btn').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    const container = document.getElementById(button.dataset.target);
-                    const prototype = container.dataset.prototype;
-                    const index = container.dataset.index || container.children.length;
+                     <script>
+                         function initializeDynamicForm() {
+                             // Gestion des sections dynamiques
+                             document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+                                 checkbox.addEventListener('change', function () {
+                                     const targetId = checkbox.id.replace('toggle-', '') + '-section';
+                                     const target = document.getElementById(targetId);
+                                     target.style.display = checkbox.checked ? 'block' : 'none';
+                                 });
+                             });
 
-                    const newForm = prototype.replace(/__name__/g, index);
-                    container.dataset.index = parseInt(index) + 1;
+                             // Gestion des choix dynamiques
+                             const choixContainer = document.getElementById('choix-container');
+                             const prototype = choixContainer.dataset.prototype;
 
-                    const div = document.createElement('div');
-                    div.classList.add('choix-item');
-                    div.innerHTML = newForm + '<button type="button" class="remove-item-btn btn btn-danger">Supprimer</button>';
-                    container.appendChild(div);
+                             function addChoix(index) {
+                                 const newForm = prototype.replace(/__name__/g, index);
+                                 const div = document.createElement('div');
+                                 div.classList.add('choix-item');
+                                 div.innerHTML = newForm + '<button type="button" class="remove-item-btn btn btn-danger">Supprimer</button>';
+                                 choixContainer.appendChild(div);
 
-                    div.querySelector('.remove-item-btn').addEventListener('click', function () {
-                        div.remove();
-                    });
-                });
-            });
+                                 // Ajout de l'événement pour le bouton "Supprimer"
+                                 div.querySelector('.remove-item-btn').addEventListener('click', function () {
+                                     div.remove();
+                                 });
+                             }
 
-            document.querySelectorAll('.remove-item-btn').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    button.closest('.choix-item').remove();
-                });
-            });
-        });
-    </script>
-{% endblock %}
+                             // Gestion du bouton "+"
+                             const addButton = document.querySelector('.add-item-btn');
+                             if (addButton) {
+                                 // Supprime les anciens gestionnaires d'événements pour éviter les doublons
+                                 addButton.replaceWith(addButton.cloneNode(true));
+                                 const newAddButton = document.querySelector('.add-item-btn');
+
+                                 newAddButton.addEventListener('click', function () {
+                                     const index = parseInt(choixContainer.dataset.index) || choixContainer.children.length;
+                                     addChoix(index);
+                                     choixContainer.dataset.index = index + 1; // Mise à jour de l'index
+                                 });
+                             }
+                         }
+
+                         // Initialisation au chargement de la page ou après un chargement Turbo
+                         document.addEventListener('DOMContentLoaded', initializeDynamicForm);
+                         document.addEventListener('turbo:load', initializeDynamicForm);
+                     </script>
+                    {% endblock %}

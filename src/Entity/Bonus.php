@@ -36,6 +36,9 @@ class Bonus
     #[ORM\ManyToMany(targetEntity: Chapitre::class, mappedBy: 'bonus')]
     private Collection $chapitres;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->chapitres = new ArrayCollection();
@@ -129,6 +132,18 @@ class Bonus
         if ($this->chapitres->removeElement($chapitre)) {
             $chapitre->removeBonu($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

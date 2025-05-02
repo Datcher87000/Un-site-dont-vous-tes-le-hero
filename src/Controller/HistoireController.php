@@ -71,7 +71,7 @@ final class HistoireController extends AbstractController
 
          $this->addFlash('success', 'Histoire créée avec succès !');
          $this->addFlash('info', 'Vous pouvez maintenant ajouter des chapitres à votre histoire.');
-         return $this->redirectToRoute('app_chapitre_new', ['id' => $histoire->getId()], Response::HTTP_SEE_OTHER);
+         return $this->redirectToRoute('app_histoire_show', ['id' => $histoire->getId()], Response::HTTP_SEE_OTHER);
      }
 
      return $this->render('histoire/new.html.twig', [

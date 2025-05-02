@@ -26,7 +26,7 @@ class ChapitreType extends AbstractType
                 'label' => 'Titre du Chapitre',
 
             ])
-            ->add('description', TextType::class, [
+            ->add('description', null, [
                 'label' => 'Description du Chapitre',
 
             ])

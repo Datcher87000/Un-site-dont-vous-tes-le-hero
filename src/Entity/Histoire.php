@@ -162,4 +162,14 @@ class Histoire
 
         return $this;
     }
+
+    public function getChapitreByNumChapitre(int $numChapitre): ?Chapitre
+    {
+        foreach ($this->chapitres as $chapitre) {
+            if ($chapitre->getNumChapitre() === $numChapitre) {
+                return $chapitre;
+            }
+        }
+        return null;
+    }
 }

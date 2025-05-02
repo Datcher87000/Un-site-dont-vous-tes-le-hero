@@ -64,4 +64,9 @@ class Choix
 
         return $this;
     }
+
+    public function getChapitreCibleEntity(): ?Chapitre
+    {
+        return $this->chapitreCible ? $this->chapitre->getHistoire()->getChapitreByNumChapitre($this->chapitreCible) : null;
+    }
 }

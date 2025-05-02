@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisir un héros{% endblock %}
+
+{% block body %}
+    <h1>Choisir un héros pour l'histoire : {{ histoire.titre }}</h1>
+    <ul>
+        {% for hero in heros %}
+            <li>
+                <a href="{{ path('app_jouer_commencer', { histoireId: histoire.id, heroId: hero.id }) }}">
+                    {{ hero.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

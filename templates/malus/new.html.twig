@@ -9,3 +9,24 @@
 
     <a href="{{ path('app_malus_index') }}">back to list</a>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const numericFields = document.querySelectorAll('input[type="number"]');
+            numericFields.forEach(field => {
+                field.addEventListener('keydown', function (e) {
+                    if (
+                        e.key !== 'ArrowUp' &&
+                        e.key !== 'ArrowDown' &&
+                        e.key !== 'Tab' &&
+                        e.key !== 'Backspace' &&
+                        e.key !== 'Delete'
+                    ) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
